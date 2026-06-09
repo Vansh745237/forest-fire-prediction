@@ -21,7 +21,7 @@ import {
 
 import "./App.css";
 function App() {
-
+const API_URL = "https://forest-fire-prediction-5.onrender.com";
   const [form, setForm] = useState({
     city: "Delhi",
     temperature: "",
@@ -57,10 +57,9 @@ const [selectedPosition, setSelectedPosition] =
   };
     const fetchHistory = async () => {
     try {
-      const response = axios.post(
-  "https://your-app-name.onrender.com/predict"
+      const response = await axios.get(
+  `${API_URL}/history`
 );
-
       setHistory(response.data);
 
     } catch (error) {
@@ -76,7 +75,7 @@ const [selectedPosition, setSelectedPosition] =
     try {
 
       const response = await axios.post(
-        "https://your-app-name.onrender.com/predict",
+  `${API_URL}/predict`,
         {
           temperature: Number(form.temperature),
           humidity: Number(form.humidity),
