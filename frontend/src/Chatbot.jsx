@@ -29,12 +29,7 @@ function ChatBot() {
 
   try {
 
-    const res = await axios.post(
-      "http://localhost:8000/chat",
-      {
-        message: input
-      }
-    );
+    const API_URL = "https://your-app-name.onrender.com";
 
     const botReply = res.data.reply;
 

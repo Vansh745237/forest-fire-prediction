@@ -57,9 +57,9 @@ const [selectedPosition, setSelectedPosition] =
   };
     const fetchHistory = async () => {
     try {
-      const response = await axios.get(
-        "http://127.0.0.1:8081/history"
-      );
+      const response = axios.post(
+  "https://your-app-name.onrender.com/predict"
+);
 
       setHistory(response.data);
 
@@ -76,7 +76,7 @@ const [selectedPosition, setSelectedPosition] =
     try {
 
       const response = await axios.post(
-        "http://127.0.0.1:8081/predict",
+        "https://your-app-name.onrender.com/predict",
         {
           temperature: Number(form.temperature),
           humidity: Number(form.humidity),
