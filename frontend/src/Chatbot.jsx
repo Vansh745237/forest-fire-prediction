@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./ChatBot.css";
+import "./Chatbot.css";
 import axios from "axios";
 
 function ChatBot() {
