@@ -29,3 +29,14 @@ __pycache__/
 *.njsproj
 *.sln
 *.sw?
+# Environment variables
+.env
+backend/.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# SQLite database
+*.db
+backend/firedb.db
