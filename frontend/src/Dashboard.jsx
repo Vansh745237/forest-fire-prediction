@@ -20,7 +20,7 @@ import {
 } from "recharts";
 
 import "./App.css";
-function App() {
+function Dashboard() {
 const API_URL = "https://forest-fire-prediction-5.onrender.com";
   const [form, setForm] = useState({
     city: "Delhi",
@@ -805,4 +805,4 @@ const chartData = [
 );
 }
 
-export default App;
+export default Dashboard;
