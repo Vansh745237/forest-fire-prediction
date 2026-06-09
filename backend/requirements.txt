@@ -4,10 +4,8 @@ sqlalchemy
 pydantic
 python-dotenv
 groq
-numpy
 pandas
+numpy
 scikit-learn
 joblib
-matplotlib
-seaborn
 psycopg2-binary
