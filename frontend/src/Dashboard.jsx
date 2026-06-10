@@ -10,6 +10,18 @@ import {
 } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  iconUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+});
 import {
   ResponsiveContainer,
   BarChart,
@@ -748,21 +760,20 @@ const chartData = [
       <h2>Select Location</h2>
 
       <MapContainer
-        center={selectedPosition}
-        zoom={8}
-        style={{
-          height: "500px",
-          width: "100%",
-        }}
-      >
+  center={selectedPosition}
+  zoom={8}
+  style={{
+    height: "500px",
+    width: "100%",
+  }}
+>
+  <TileLayer
+    url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+    attribution='&copy; OpenStreetMap &copy; CARTO'
+  />
 
-       <TileLayer
-  url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-  attribution='&copy; OpenStreetMap &copy; CARTO'
-/>
-        <LocationMarker />
-
-      </MapContainer>
+  { <LocationMarker /> }
+</MapContainer>
 
       <button
         style={{ marginTop: "15px" }}
