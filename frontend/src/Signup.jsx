@@ -6,14 +6,15 @@ import "./signup.css";
 export default function Signup() {
   const navigate = useNavigate();
 
-  const API_URL = import.meta.env.VITE_API_URL;
-
   const [formData, setFormData] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+
+  const API_URL =
+    "https://forest-fire-prediction-5.onrender.com";
 
   const handleChange = (e) => {
     setFormData({
@@ -31,25 +32,28 @@ export default function Signup() {
     }
 
     try {
-      await axios.post(`${API_URL}/signup`, {
-        username: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        `${API_URL}/signup`,
+        {
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        }
+      );
 
-      alert("Account Created Successfully!");
+      alert(response.data.message || "Signup Successful");
       navigate("/");
 
     } catch (error) {
-      console.error(error);
+      console.error("Signup Error:", error);
 
-      if (
-        error.response?.data?.message ===
-        "Email already exists"
-      ) {
-        alert("Email already exists");
+      if (error.response) {
+        alert(
+          error.response.data.message ||
+          `Error: ${error.response.status}`
+        );
       } else {
-        alert("Signup Failed");
+        alert("Server not responding");
       }
     }
   };
@@ -84,9 +88,9 @@ export default function Signup() {
 
           <input
             type="text"
-            name="name"
-            placeholder="Enter your full name"
-            value={formData.name}
+            name="username"
+            placeholder="Enter your username"
+            value={formData.username}
             onChange={handleChange}
             required
           />
