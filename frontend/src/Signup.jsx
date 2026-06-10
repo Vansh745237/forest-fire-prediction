@@ -13,8 +13,7 @@ export default function Signup() {
     confirmPassword: "",
   });
 
-  const API_URL =
-    "https://forest-fire-prediction-5.onrender.com";
+  const API_URL = "https://forest-fire-prediction-5.onrender.com";
 
   const handleChange = (e) => {
     setFormData({
