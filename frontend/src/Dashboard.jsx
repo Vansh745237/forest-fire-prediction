@@ -107,12 +107,12 @@ const [selectedPosition, setSelectedPosition] =
       const data = response.data;
 
       setForm((prev) => ({
-        ...prev,
-        temperature: data.current.temp_c,
-        humidity: data.current.humidity,
-        wind: data.current.wind_kph,
-        rain: 0,
-      }));
+  ...prev,
+  temperature: data.current.temp_c,
+  humidity: data.current.humidity,
+  wind: data.current.wind_kph,
+  rain: data.current.precip_mm || 0,
+}));
 
     } catch (error) {
 
@@ -756,10 +756,13 @@ const chartData = [
         }}
       >
 
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+       <TileLayer
+  url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+/>
 
+<TileLayer
+  url="https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
+/>
         <LocationMarker />
 
       </MapContainer>
