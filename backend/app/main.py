@@ -27,9 +27,11 @@ from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://forest-fire-prediction-zo7z.vercel.app",
-        "http://localhost:5173",
-        "http://localhost:5174"
+         "http://localhost:5174",
+        "http://127.0.0.1:5174",
+        "http://localhost:5175",
+        "http://127.0.0.1:5175",
+        "https://forest-fire-prediction-zo7z.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
