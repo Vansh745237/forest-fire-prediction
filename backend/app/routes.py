@@ -26,18 +26,33 @@ router = APIRouter()
 @router.post("/signup")
 def signup(user: UserCreate, db: Session = Depends(get_db)):
     try:
-        print("PASSWORD:", user.password)
-        print("LENGTH:", len(user.password))
+        existing_email = db.query(User).filter(
+            User.email == user.email
+        ).first()
 
-        hashed = hash_password(user.password)
+        if existing_email:
+            return {"message": "Email already exists"}
 
-        return {
-            "password": user.password,
-            "length": len(user.password),
-            "hashed": hashed[:20]
-        }
+        existing_username = db.query(User).filter(
+            User.username == user.username
+        ).first()
+
+        if existing_username:
+            return {"message": "Username already exists"}
+
+        new_user = User(
+            username=user.username,
+            email=user.email,
+            password=hash_password(user.password)
+        )
+
+        db.add(new_user)
+        db.commit()
+
+        return {"message": "Signup successful"}
 
     except Exception as e:
+        db.rollback()
         return {"error": str(e)}
 
 # =========================
