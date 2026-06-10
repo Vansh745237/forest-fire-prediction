@@ -116,11 +116,14 @@ const [selectedPosition, setSelectedPosition] =
     );
 
     setResult(response.data);
+    console.log("PREDICTION SUCCESS");
+console.log(response.data);
 
     const total =
   Number(localStorage.getItem("predictionCount") || 0) + 1;
 
 localStorage.setItem("predictionCount", total);
+console.log("SAVED TO LOCALSTORAGE");
 setPredictionCount(total);
 
 const risk =
