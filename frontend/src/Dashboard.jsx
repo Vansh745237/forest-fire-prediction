@@ -441,9 +441,7 @@ const chartData = [
   </div>
 
   <div className="stat-card low">
-    <h3>
-      {history.filter(h => h.risk_level === "LOW").length}
-    </h3>
+    <h3>{lowRisk}</h3>
     <p>Low Risk</p>
   </div>
 
