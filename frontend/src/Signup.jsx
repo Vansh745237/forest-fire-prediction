@@ -6,9 +6,6 @@ import "./signup.css";
 export default function Signup() {
   const navigate = useNavigate();
 
-  const API_URL =
-    "https://forest-fire-prediction-5.onrender.com";
-
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -16,7 +13,7 @@ export default function Signup() {
     confirmPassword: "",
   });
 
-  const [loading, setLoading] = useState(false);
+  const API_URL = "https://forest-fire-prediction-5.onrender.com";
 
   const handleChange = (e) => {
     setFormData({
@@ -28,67 +25,36 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    if (
-      !formData.username ||
-      !formData.email ||
-      !formData.password
-    ) {
-      alert("Please fill all fields");
-      return;
-    }
-
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match");
       return;
     }
 
     try {
-      setLoading(true);
-
-      console.log("SIGNUP REQUEST:", {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-      });
-
+      console.log("API_URL =", API_URL);
       const response = await axios.post(
         `${API_URL}/signup`,
         {
-          username: formData.username.trim(),
-          email: formData.email.trim(),
+          username: formData.username,
+          email: formData.email,
           password: formData.password,
         }
       );
 
-      console.log("SIGNUP RESPONSE:", response.data);
-
-      alert(
-        response.data.message ||
-          "Account Created Successfully!"
-      );
-
+      alert(response.data.message || "Signup Successful");
       navigate("/");
 
     } catch (error) {
-      console.error("SIGNUP ERROR:", error);
+      console.error("Signup Error:", error);
 
       if (error.response) {
-        console.log(
-          "ERROR RESPONSE:",
-          error.response.data
-        );
-
         alert(
           error.response.data.message ||
-          error.response.data.error ||
-          `Error ${error.response.status}`
+          `Error: ${error.response.status}`
         );
       } else {
         alert("Server not responding");
       }
-
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -159,9 +125,8 @@ export default function Signup() {
           <button
             type="submit"
             className="login-btn"
-            disabled={loading}
           >
-            {loading ? "CREATING..." : "SIGN UP →"}
+            SIGN UP →
           </button>
 
         </form>
