@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./signup.css";
 
 export default function Signup() {
   const navigate = useNavigate();
+
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -19,7 +22,7 @@ export default function Signup() {
     });
   };
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -27,13 +30,28 @@ export default function Signup() {
       return;
     }
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify(formData)
-    );
+    try {
+      await axios.post(`${API_URL}/signup`, {
+        username: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
 
-    alert("Account Created Successfully!");
-    navigate("/");
+      alert("Account Created Successfully!");
+      navigate("/");
+
+    } catch (error) {
+      console.error(error);
+
+      if (
+        error.response?.data?.message ===
+        "Email already exists"
+      ) {
+        alert("Email already exists");
+      } else {
+        alert("Signup Failed");
+      }
+    }
   };
 
   return (

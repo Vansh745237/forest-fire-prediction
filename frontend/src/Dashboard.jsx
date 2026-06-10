@@ -48,22 +48,38 @@ const API_URL = "https://forest-fire-prediction-5.onrender.com";
 const [highRisk, setHighRisk] = useState(0);
 const [mediumRisk, setMediumRisk] = useState(0);
 const [lowRisk, setLowRisk] = useState(0);
+
+const userId = localStorage.getItem("user_id");
+
+const fetchUserStats = async () => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/user-stats/${userId}`
+    );
+
+    setPredictionCount(
+      response.data.prediction_count
+    );
+
+    setHighRisk(
+      response.data.high_risk
+    );
+
+    setMediumRisk(
+      response.data.medium_risk
+    );
+
+    setLowRisk(
+      response.data.low_risk
+    );
+
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 useEffect(() => {
-  setPredictionCount(
-    Number(localStorage.getItem("predictionCount")) || 0
-  );
-
-  setHighRisk(
-    Number(localStorage.getItem("highRisk")) || 0
-  );
-
-  setMediumRisk(
-    Number(localStorage.getItem("mediumRisk")) || 0
-  );
-
-  setLowRisk(
-    Number(localStorage.getItem("lowRisk")) || 0
-  );
+  fetchUserStats();
 }, []);
   const [suggestions, setSuggestions] = useState([]);
   const [showMap, setShowMap] = useState(false);
@@ -91,7 +107,7 @@ const [selectedPosition, setSelectedPosition] =
     const fetchHistory = async () => {
     try {
       const response = await axios.get(
-  `${API_URL}/history`
+  `${API_URL}/history/${userId}`
 );
       setHistory(response.data);
 
@@ -108,50 +124,18 @@ const [selectedPosition, setSelectedPosition] =
     const response = await axios.post(
       `${API_URL}/predict`,
       {
-        temperature: Number(form.temperature),
-        humidity: Number(form.humidity),
-        wind: Number(form.wind),
-        rain: Number(form.rain),
-      }
+  user_id: Number(userId),
+  temperature: Number(form.temperature),
+  humidity: Number(form.humidity),
+  wind: Number(form.wind),
+  rain: Number(form.rain),
+}
     );
 
     setResult(response.data);
     console.log("PREDICTION SUCCESS");
 console.log(response.data);
 
-    const total =
-  Number(localStorage.getItem("predictionCount") || 0) + 1;
-
-localStorage.setItem("predictionCount", total);
-console.log("SAVED TO LOCALSTORAGE");
-setPredictionCount(total);
-
-const risk =
-  response.data.risk_level?.trim().toUpperCase();
-
-if (risk === "HIGH") {
-  const count =
-    Number(localStorage.getItem("highRisk") || 0) + 1;
-
-  localStorage.setItem("highRisk", count);
-  setHighRisk(count);
-}
-
-if (risk === "MEDIUM") {
-  const count =
-    Number(localStorage.getItem("mediumRisk") || 0) + 1;
-
-  localStorage.setItem("mediumRisk", count);
-  setMediumRisk(count);
-}
-
-if (risk === "LOW") {
-  const count =
-    Number(localStorage.getItem("lowRisk") || 0) + 1;
-
-  localStorage.setItem("lowRisk", count);
-  setLowRisk(count);
-}
 
     fetchHistory();
   } catch (error) {

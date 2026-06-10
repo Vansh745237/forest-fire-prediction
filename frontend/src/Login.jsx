@@ -1,12 +1,47 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const API_URL =
+  "https://forest-fire-prediction-5.onrender.com";// example: https://your-render-url.onrender.com
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    navigate("/dashboard");
+
+    try {
+      const response = await axios.post(
+        `${API_URL}/login`,
+        {
+          email,
+          password
+        }
+      );
+
+      localStorage.setItem(
+        "user_id",
+        response.data.user_id
+      );
+
+      localStorage.setItem(
+        "username",
+        response.data.username
+      );
+
+      alert("Login Successful");
+
+      navigate("/dashboard");
+
+    } catch (error) {
+      console.error(error);
+      alert("Invalid Email or Password");
+    }
   };
 
   return (
@@ -39,11 +74,21 @@ function Login() {
           <input
             type="email"
             placeholder="Enter your email"
+            value={email}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
+            required
           />
 
           <input
             type="password"
             placeholder="Enter your password"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+            required
           />
 
           <button type="submit">
