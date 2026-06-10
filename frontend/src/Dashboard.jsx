@@ -97,55 +97,55 @@ const [selectedPosition, setSelectedPosition] =
     fetchHistory();
   }, []);
     const predictFire = async () => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/predict`,
+      {
+        temperature: Number(form.temperature),
+        humidity: Number(form.humidity),
+        wind: Number(form.wind),
+        rain: Number(form.rain),
+      }
+    );
 
-    try {
+    setResult(response.data);
 
-      const response = await axios.post(
-  `${API_URL}/predict`,
-        {
-          temperature: Number(form.temperature),
-          humidity: Number(form.humidity),
-          wind: Number(form.wind),
-          rain: Number(form.rain),
-        }
-      );
+    // Total Predictions
+    const total =
+      Number(localStorage.getItem("predictionCount") || 0) + 1;
 
-      setResult(response.data);
+    localStorage.setItem("predictionCount", total);
+    setPredictionCount(total);
 
-// Total Predictions
-const total = predictionCount + 1;
-setPredictionCount(total);
-localStorage.setItem("predictionCount", total);
+    // Risk Counters
+    const risk = response.data.risk_level?.trim().toUpperCase();
 
-// Risk-wise Count
-if (response.data.risk_level === "HIGH") {
-  const count = highRisk + 1;
-  setHighRisk(count);
-  localStorage.setItem("highRisk", count);
-}
+    if (risk === "HIGH") {
+      const count =
+        Number(localStorage.getItem("highRisk") || 0) + 1;
 
-else if (response.data.risk_level === "MEDIUM") {
-  const count = mediumRisk + 1;
-  setMediumRisk(count);
-  localStorage.setItem("mediumRisk", count);
-}
+      localStorage.setItem("highRisk", count);
+      setHighRisk(count);
+    } else if (risk === "MEDIUM") {
+      const count =
+        Number(localStorage.getItem("mediumRisk") || 0) + 1;
 
-else if (response.data.risk_level === "LOW") {
-  const count = lowRisk + 1;
-  setLowRisk(count);
-  localStorage.setItem("lowRisk", count);
-}
+      localStorage.setItem("mediumRisk", count);
+      setMediumRisk(count);
+    } else if (risk === "LOW") {
+      const count =
+        Number(localStorage.getItem("lowRisk") || 0) + 1;
 
-fetchHistory();
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert("Prediction Failed");
-
+      localStorage.setItem("lowRisk", count);
+      setLowRisk(count);
     }
-  };
+
+    fetchHistory();
+  } catch (error) {
+    console.error(error);
+    alert("Prediction Failed");
+  }
+};
     const getCurrentWeather = async () => {
 
     try {
@@ -429,7 +429,7 @@ const chartData = [
 
   <div className="stat-card low">
     <h3>
-      {lowRisk}
+      {history.filter(h => h.risk_level === "LOW").length}
     </h3>
     <p>Low Risk</p>
   </div>
