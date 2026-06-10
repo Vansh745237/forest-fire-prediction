@@ -44,6 +44,20 @@ const API_URL = "https://forest-fire-prediction-5.onrender.com";
 
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
+  const [predictionCount, setPredictionCount] = useState(() => {
+  return Number(localStorage.getItem("predictionCount")) || 0;
+});
+const [highRisk, setHighRisk] = useState(
+  Number(localStorage.getItem("highRisk")) || 0
+);
+
+const [mediumRisk, setMediumRisk] = useState(
+  Number(localStorage.getItem("mediumRisk")) || 0
+);
+
+const [lowRisk, setLowRisk] = useState(
+  Number(localStorage.getItem("lowRisk")) || 0
+);
   const [suggestions, setSuggestions] = useState([]);
   const [showMap, setShowMap] = useState(false);
 
@@ -98,7 +112,31 @@ const [selectedPosition, setSelectedPosition] =
 
       setResult(response.data);
 
-      fetchHistory();
+// Total Predictions
+const total = predictionCount + 1;
+setPredictionCount(total);
+localStorage.setItem("predictionCount", total);
+
+// Risk-wise Count
+if (response.data.risk_level === "HIGH") {
+  const count = highRisk + 1;
+  setHighRisk(count);
+  localStorage.setItem("highRisk", count);
+}
+
+else if (response.data.risk_level === "MEDIUM") {
+  const count = mediumRisk + 1;
+  setMediumRisk(count);
+  localStorage.setItem("mediumRisk", count);
+}
+
+else if (response.data.risk_level === "LOW") {
+  const count = lowRisk + 1;
+  setLowRisk(count);
+  localStorage.setItem("lowRisk", count);
+}
+
+fetchHistory();
 
     } catch (error) {
 
@@ -373,27 +411,25 @@ const chartData = [
     <div className="stats-grid">
 
   <div className="stat-card">
-    <h3>{history.length}</h3>
-    <p>Total Predictions</p>
-  </div>
+  <h3>{predictionCount}</h3>
+  <p>Total Predictions</p>
+</div>
 
   <div className="stat-card high">
-    <h3>
-      {history.filter(h => h.risk_level === "HIGH").length}
-    </h3>
-    <p>High Risk</p>
-  </div>
+  <h3>{highRisk}</h3>
+  <p>High Risk</p>
+</div>
 
   <div className="stat-card medium">
     <h3>
-      {history.filter(h => h.risk_level === "MEDIUM").length}
+      {mediumRisk}
     </h3>
     <p>Medium Risk</p>
   </div>
 
   <div className="stat-card low">
     <h3>
-      {history.filter(h => h.risk_level === "LOW").length}
+      {lowRisk}
     </h3>
     <p>Low Risk</p>
   </div>
