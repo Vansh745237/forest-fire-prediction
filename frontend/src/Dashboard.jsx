@@ -44,20 +44,27 @@ const API_URL = "https://forest-fire-prediction-5.onrender.com";
 
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
-  const [predictionCount, setPredictionCount] = useState(() => {
-  return Number(localStorage.getItem("predictionCount")) || 0;
-});
-const [highRisk, setHighRisk] = useState(
-  Number(localStorage.getItem("highRisk")) || 0
-);
+ const [predictionCount, setPredictionCount] = useState(0);
+const [highRisk, setHighRisk] = useState(0);
+const [mediumRisk, setMediumRisk] = useState(0);
+const [lowRisk, setLowRisk] = useState(0);
+useEffect(() => {
+  setPredictionCount(
+    Number(localStorage.getItem("predictionCount")) || 0
+  );
 
-const [mediumRisk, setMediumRisk] = useState(
-  Number(localStorage.getItem("mediumRisk")) || 0
-);
+  setHighRisk(
+    Number(localStorage.getItem("highRisk")) || 0
+  );
 
-const [lowRisk, setLowRisk] = useState(
-  Number(localStorage.getItem("lowRisk")) || 0
-);
+  setMediumRisk(
+    Number(localStorage.getItem("mediumRisk")) || 0
+  );
+
+  setLowRisk(
+    Number(localStorage.getItem("lowRisk")) || 0
+  );
+}, []);
   const [suggestions, setSuggestions] = useState([]);
   const [showMap, setShowMap] = useState(false);
 
@@ -110,35 +117,38 @@ const [selectedPosition, setSelectedPosition] =
 
     setResult(response.data);
 
-    // Total Predictions
     const total =
-      Number(localStorage.getItem("predictionCount") || 0) + 1;
+  Number(localStorage.getItem("predictionCount") || 0) + 1;
 
-    localStorage.setItem("predictionCount", total);
-    setPredictionCount(total);
+localStorage.setItem("predictionCount", total);
+setPredictionCount(total);
 
-    // Risk Counters
-    const risk = response.data.risk_level?.trim().toUpperCase();
+const risk =
+  response.data.risk_level?.trim().toUpperCase();
 
-    if (risk === "HIGH") {
-      const count =
-        Number(localStorage.getItem("highRisk") || 0) + 1;
+if (risk === "HIGH") {
+  const count =
+    Number(localStorage.getItem("highRisk") || 0) + 1;
 
-      localStorage.setItem("highRisk", count);
-      setHighRisk(count);
-    } else if (risk === "MEDIUM") {
-      const count =
-        Number(localStorage.getItem("mediumRisk") || 0) + 1;
+  localStorage.setItem("highRisk", count);
+  setHighRisk(count);
+}
 
-      localStorage.setItem("mediumRisk", count);
-      setMediumRisk(count);
-    } else if (risk === "LOW") {
-      const count =
-        Number(localStorage.getItem("lowRisk") || 0) + 1;
+if (risk === "MEDIUM") {
+  const count =
+    Number(localStorage.getItem("mediumRisk") || 0) + 1;
 
-      localStorage.setItem("lowRisk", count);
-      setLowRisk(count);
-    }
+  localStorage.setItem("mediumRisk", count);
+  setMediumRisk(count);
+}
+
+if (risk === "LOW") {
+  const count =
+    Number(localStorage.getItem("lowRisk") || 0) + 1;
+
+  localStorage.setItem("lowRisk", count);
+  setLowRisk(count);
+}
 
     fetchHistory();
   } catch (error) {
