@@ -424,6 +424,7 @@ const chartData = [
     <div className="stats-grid">
 
   <div className="stat-card">
+    <p>Debug: {predictionCount}</p>
   <h3>{predictionCount}</h3>
   <p>Total Predictions</p>
 </div>
