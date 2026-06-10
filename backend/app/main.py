@@ -32,6 +32,7 @@ allow_origins=[
     "http://localhost:5175",
     "http://127.0.0.1:5175",
     "https://forest-fire-prediction-zo7z.vercel.app"
+    "https://forest-fire-prediction-4yv1.vercel.app"
 ],
     allow_credentials=True,
     allow_methods=["*"],
