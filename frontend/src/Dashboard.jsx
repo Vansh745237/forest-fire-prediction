@@ -757,11 +757,8 @@ const chartData = [
       >
 
        <TileLayer
-  url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-/>
-
-<TileLayer
-  url="https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
+  url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+  attribution='&copy; OpenStreetMap &copy; CARTO'
 />
         <LocationMarker />
 
