@@ -32,6 +32,7 @@ export default function Signup() {
     }
 
     try {
+      console.log("API_URL =", API_URL);
       const response = await axios.post(
         `${API_URL}/signup`,
         {
