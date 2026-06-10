@@ -1,7 +1,9 @@
+console.log("USER ID:", userId);
 import ChatBot from "./Chatbot";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
+
 import {
   MapContainer,
   TileLayer,
@@ -120,26 +122,31 @@ const [selectedPosition, setSelectedPosition] =
     fetchHistory();
   }, []);
     const predictFire = async () => {
+
+  if (!userId || userId === "undefined") {
+    alert("Please login again");
+    navigate("/");
+    return;
+  }
+
   try {
     const response = await axios.post(
       `${API_URL}/predict`,
       {
-  user_id: Number(userId),
-  temperature: Number(form.temperature),
-  humidity: Number(form.humidity),
-  wind: Number(form.wind),
-  rain: Number(form.rain),
-}
+        user_id: Number(userId),
+        temperature: Number(form.temperature),
+        humidity: Number(form.humidity),
+        wind: Number(form.wind),
+        rain: Number(form.rain),
+      }
     );
 
     setResult(response.data);
-    console.log("PREDICTION SUCCESS");
-console.log(response.data);
-
-
     fetchHistory();
+
   } catch (error) {
     console.error(error);
+    console.log(error.response?.data);
     alert("Prediction Failed");
   }
 };

@@ -23,6 +23,8 @@ function Login() {
           password
         }
       );
+      console.log("LOGIN RESPONSE");
+console.log(response.data);
 
       localStorage.setItem(
         "user_id",
