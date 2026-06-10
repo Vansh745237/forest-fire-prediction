@@ -2,6 +2,7 @@ fastapi
 uvicorn
 sqlalchemy
 pydantic
+email-validator
 python-dotenv
 groq
 pandas
@@ -9,3 +10,6 @@ numpy
 scikit-learn
 joblib
 psycopg2-binary
+passlib[bcrypt]
+bcrypt
+python-multipart
