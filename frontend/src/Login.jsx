@@ -10,7 +10,7 @@ function Login() {
   const [password, setPassword] = useState("");
 
   const API_URL =
-  "https://forest-fire-prediction-5.onrender.com";// example: https://your-render-url.onrender.com
+    "https://forest-fire-prediction-5.onrender.com";
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,21 +19,31 @@ function Login() {
       const response = await axios.post(
         `${API_URL}/login`,
         {
-          email,
-          password
+          email: email.trim(),
+          password,
         }
       );
-      console.log("LOGIN RESPONSE");
-console.log(response.data);
+
+      console.log("LOGIN RESPONSE:", response.data);
+
+      if (!response.data.user_id) {
+        alert("user_id not received from server");
+        return;
+      }
 
       localStorage.setItem(
         "user_id",
-        response.data.user_id
+        String(response.data.user_id)
       );
 
       localStorage.setItem(
         "username",
-        response.data.username
+        response.data.username || ""
+      );
+
+      console.log(
+        "SAVED USER ID:",
+        localStorage.getItem("user_id")
       );
 
       alert("Login Successful");
@@ -41,18 +51,24 @@ console.log(response.data);
       navigate("/dashboard");
 
     } catch (error) {
-      console.error(error);
+      console.error("LOGIN ERROR:", error);
+
+      if (error.response) {
+        console.log(
+          "SERVER RESPONSE:",
+          error.response.data
+        );
+      }
+
       alert("Invalid Email or Password");
     }
   };
 
   return (
     <div className="login-page">
-
       <div className="overlay"></div>
 
       <div className="login-card">
-
         <div className="logo">
           🔥
         </div>
@@ -72,7 +88,6 @@ console.log(response.data);
         </p>
 
         <form onSubmit={handleLogin}>
-
           <input
             type="email"
             placeholder="Enter your email"
@@ -96,7 +111,6 @@ console.log(response.data);
           <button type="submit">
             LOGIN →
           </button>
-
         </form>
 
         <div className="signup-link">
@@ -105,9 +119,7 @@ console.log(response.data);
             Sign Up
           </Link>
         </div>
-
       </div>
-
     </div>
   );
 }
