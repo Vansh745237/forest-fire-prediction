@@ -1,14 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from app.database import Base, engine
-from app.routes import router
 from pydantic import BaseModel, EmailStr
+
+from app.database import Base, engine, SessionLocal
+from app.routes import router
 from app.models import User
 from app.auth import hash_password
-from app.database import SessionLocal
-from app.schemas import ResetPasswordRequest
+
 import resend
-from groq import Groq
 from dotenv import load_dotenv
 import os
 
@@ -27,25 +26,43 @@ app = FastAPI(
     title="Forest Fire Prediction API"
 )
 
-print("CORS LOADED")
+# =========================
+# CORS
+# =========================
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# =========================
+# DATABASE
+# =========================
+
 Base.metadata.create_all(bind=engine)
 
+# Existing routes
 app.include_router(router)
+
+# =========================
+# REQUEST MODELS
+# =========================
+
 class ForgotPasswordRequest(BaseModel):
     email: EmailStr
 
 
-class ForgotPasswordRequest(BaseModel):
+class ResetPasswordRequest(BaseModel):
     email: EmailStr
+    new_password: str
 
+
+# =========================
+# FORGOT PASSWORD
+# =========================
 
 @app.post("/forgot-password")
 async def forgot_password(data: ForgotPasswordRequest):
@@ -62,10 +79,16 @@ async def forgot_password(data: ForgotPasswordRequest):
             "html": f"""
             <h2>Reset Your Password</h2>
 
-            <p>Click the button below:</p>
+            <p>Click the button below to reset your password:</p>
 
-            <a href="{reset_link}">
-                Reset Password
+            <a href="{reset_link}"
+               style="
+               background:#16a34a;
+               color:white;
+               padding:12px 20px;
+               text-decoration:none;
+               border-radius:6px;">
+               Reset Password
             </a>
             """
         }
@@ -82,6 +105,10 @@ async def forgot_password(data: ForgotPasswordRequest):
             detail=str(e)
         )
 
+
+# =========================
+# RESET PASSWORD
+# =========================
 
 @app.post("/reset-password")
 async def reset_password(data: ResetPasswordRequest):
@@ -111,3 +138,14 @@ async def reset_password(data: ResetPasswordRequest):
 
     finally:
         db.close()
+
+
+# =========================
+# ROOT
+# =========================
+
+@app.get("/")
+def root():
+    return {
+        "message": "Forest Fire Prediction API Running"
+    }
