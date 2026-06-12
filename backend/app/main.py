@@ -126,13 +126,10 @@ async def forgot_password(data: ForgotPasswordRequest):
             "from": "onboarding@resend.dev",
             "to": [data.email],
             "subject": "Password Reset Request",
-            "html": f"""
+            "html": """
             <h2>Reset Your Password</h2>
             <p>You requested a password reset.</p>
-            <p>Click the link below:</p>
-            <a href="https://forest-fire-prediction-4yv1.vercel.app/reset-password">
-                Reset Password
-            </a>
+            <p>If this was you, please reset your password.</p>
             """
         }
 
