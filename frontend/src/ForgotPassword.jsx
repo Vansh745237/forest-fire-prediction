@@ -1,4 +1,4 @@
-console.log("FORGOT PASSWORD V3");
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -8,28 +8,21 @@ function ForgotPassword() {
 
   const API_URL =
     "https://forest-fire-prediction-5.onrender.com";
-const handleReset = async () => {
-  alert("handleReset running");
 
-  try {
-    console.log("Sending request...");
+  const handleReset = async () => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/forgot-password`,
+        { email }
+      );
 
-    const response = await axios.post(
-      `${API_URL}/forgot-password`,
-      { email }
-    );
+      alert(response.data.message);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to send reset link");
+    }
+  };
 
-    console.log("Response:", response);
-    alert(response.data.message);
-
-  } catch (error) {
-    console.error("FULL ERROR:", error);
-    console.error("RESPONSE:", error.response);
-    console.error("MESSAGE:", error.message);
-
-    alert("API Error");
-  }
-};
   return (
     <div className="login-page">
       <div className="overlay"></div>
@@ -42,26 +35,18 @@ const handleReset = async () => {
         <p className="subtitle">
           Enter your email to reset your password.
         </p>
-<div style={{ color: "red", fontWeight: "bold" }}>
-  FORGOT PASSWORD TEST
-</div>
+
         <input
           type="email"
           placeholder="Enter your email"
           value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
+          onChange={(e) => setEmail(e.target.value)}
         />
 
-        <button
-  onClick={() => {
-    alert("Button clicked");
-    handleReset();
-  }}
->
-  Send Reset Link
-</button>
+        <button onClick={handleReset}>
+          Send Reset Link
+        </button>
+
         <div className="signup-link">
           <Link to="/">
             Back to Login
