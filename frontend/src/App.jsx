@@ -7,7 +7,7 @@ import {
 import Login from "./Login";
 import Signup from "./Signup";
 import Dashboard from "./Dashboard";
-import ForgotPassword from "./pages/ForgotPassword";
+import ForgotPassword from "./ForgotPassword";
 
 function App() {
   return (

@@ -41,11 +41,6 @@ function Login() {
         response.data.username || ""
       );
 
-      console.log(
-        "SAVED USER ID:",
-        localStorage.getItem("user_id")
-      );
-
       alert("Login Successful");
       navigate("/dashboard");
 
@@ -105,14 +100,11 @@ function Login() {
             required
           />
 
-          <p style={{ color: "white", textAlign: "right", marginBottom: "15px" }}>
-  <Link
-    to="/forgot-password"
-    style={{ color: "#ff9800" }}
-  >
-    Forgot Password?
-  </Link>
-</p>
+          <div className="forgot-password">
+            <Link to="/forgot-password">
+              Forgot Password?
+            </Link>
+          </div>
 
           <button type="submit">
             LOGIN →
