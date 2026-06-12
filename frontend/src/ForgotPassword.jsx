@@ -37,7 +37,9 @@ function ForgotPassword() {
         <p className="subtitle">
           Enter your email to reset your password.
         </p>
-
+<div style={{ color: "red", fontWeight: "bold" }}>
+  FORGOT PASSWORD TEST
+</div>
         <input
           type="email"
           placeholder="Enter your email"
