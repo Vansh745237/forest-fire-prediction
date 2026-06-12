@@ -3,6 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
 from app.routes import router
 from pydantic import BaseModel, EmailStr
+from app.models import User
+from app.auth import hash_password
+from app.database import SessionLocal
+from app.schemas import ResetPasswordRequest
 import resend
 from groq import Groq
 from dotenv import load_dotenv
@@ -39,16 +43,30 @@ class ForgotPasswordRequest(BaseModel):
     email: EmailStr
 
 
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
 @app.post("/forgot-password")
 async def forgot_password(data: ForgotPasswordRequest):
     try:
+
+        reset_link = (
+            f"https://forest-fire-prediction-4yv1.vercel.app/reset-password?email={data.email}"
+        )
+
         params = {
             "from": "onboarding@resend.dev",
             "to": [data.email],
             "subject": "Password Reset Request",
-            "html": """
+            "html": f"""
             <h2>Reset Your Password</h2>
-            <p>You requested a password reset.</p>
+
+            <p>Click the button below:</p>
+
+            <a href="{reset_link}">
+                Reset Password
+            </a>
             """
         }
 
@@ -63,3 +81,33 @@ async def forgot_password(data: ForgotPasswordRequest):
             status_code=500,
             detail=str(e)
         )
+
+
+@app.post("/reset-password")
+async def reset_password(data: ResetPasswordRequest):
+
+    db = SessionLocal()
+
+    try:
+        user = db.query(User).filter(
+            User.email == data.email
+        ).first()
+
+        if not user:
+            raise HTTPException(
+                status_code=404,
+                detail="User not found"
+            )
+
+        user.password = hash_password(
+            data.new_password
+        )
+
+        db.commit()
+
+        return {
+            "message": "Password reset successful"
+        }
+
+    finally:
+        db.close()

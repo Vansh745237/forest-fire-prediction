@@ -54,3 +54,8 @@ class UserStats(BaseModel):
     high_risk: int
     medium_risk: int
     low_risk: int
+
+
+class ResetPasswordRequest(BaseModel):
+    email: EmailStr
+    new_password: str
