@@ -25,8 +25,13 @@ function App() {
     path="/reset-password"
     element={<ResetPassword />}
   />
+  <Route
+  path="/test"
+  element={<h1>TEST ROUTE</h1>}
+/>
       </Routes>
     </BrowserRouter>
+    
   );
 }
 
