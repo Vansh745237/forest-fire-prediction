@@ -3,9 +3,7 @@ from app.database import Base, engine
 from app.routes import router
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
-
-import smtplib
-from email.mime.text import MIMEText
+import resend
 from groq import Groq
 from dotenv import load_dotenv
 import os
@@ -15,6 +13,7 @@ import os
 # =========================
 
 load_dotenv()
+resend.api_key = os.getenv("RESEND_API_KEY")
 
 # =========================
 # FASTAPI APP
@@ -124,48 +123,36 @@ Keep answers concise and helpful.
 async def forgot_password(data: ForgotPasswordRequest):
 
     try:
-        sender_email = os.getenv("EMAIL_USER")
-        sender_password = os.getenv("EMAIL_PASSWORD")
 
-        if not sender_email or not sender_password:
-            raise HTTPException(
-                status_code=500,
-                detail="Email credentials not configured"
-            )
+        resend.Emails.send(
+            {
+                "from": "onboarding@resend.dev",
+                "to": data.email,
+                "subject": "Forest Fire Prediction - Password Reset",
+                "html": """
+                <h2>Password Reset</h2>
 
-        reset_link = (
-            "https://forest-fire-prediction-zo7z.vercel.app/reset-password"
+                <p>
+                  You requested a password reset.
+                </p>
+
+                <p>
+                  Click the link below:
+                </p>
+
+                <a href="https://forest-fire-prediction-zo7z.vercel.app/reset-password">
+                  Reset Password
+                </a>
+                """
+            }
         )
-
-        msg = MIMEText(
-            f"""
-Hello,
-
-You requested a password reset.
-
-Click the link below:
-
-{reset_link}
-
-If you did not request this, ignore this email.
-"""
-        )
-
-        msg["Subject"] = "Password Reset Request"
-        msg["From"] = sender_email
-        msg["To"] = data.email
-
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()
-        server.login(sender_email, sender_password)
-        server.send_message(msg)
-        server.quit()
 
         return {
             "message": "Reset link sent successfully"
         }
 
     except Exception as e:
+
         raise HTTPException(
             status_code=500,
             detail=str(e)
