@@ -10,18 +10,23 @@ function ForgotPassword() {
     "https://forest-fire-prediction-5.onrender.com";
 
   const handleReset = async () => {
-    try {
-      const response = await axios.post(
-        `${API_URL}/forgot-password`,
-        { email }
-      );
+  console.log("Button clicked");
+  console.log("API URL:", API_URL);
 
-      alert(response.data.message);
-    } catch (error) {
-      console.error(error);
-      alert("Failed to send reset link");
-    }
-  };
+  try {
+    const response = await axios.post(
+      `${API_URL}/forgot-password`,
+      { email }
+    );
+
+    console.log("Response:", response.data);
+    alert(response.data.message);
+  } catch (error) {
+    console.error("FULL ERROR:", error);
+    console.error("ERROR RESPONSE:", error.response);
+    alert("Failed to send reset link");
+  }
+};
 
   return (
     <div className="login-page">
