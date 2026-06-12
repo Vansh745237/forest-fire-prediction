@@ -278,3 +278,18 @@
     font-size:15px;
   }
 }
+.forgot-password {
+  text-align: right;
+  margin: 8px 0 16px;
+}
+
+.forgot-password a {
+  text-decoration: none;
+  font-size: 14px;
+  color: #ff9800;
+  font-weight: 500;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}

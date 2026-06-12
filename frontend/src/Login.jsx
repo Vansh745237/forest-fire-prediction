@@ -49,7 +49,6 @@ function Login() {
       alert("Login Successful");
 
       navigate("/dashboard");
-
     } catch (error) {
       console.error("LOGIN ERROR:", error);
 
@@ -69,9 +68,7 @@ function Login() {
       <div className="overlay"></div>
 
       <div className="login-card">
-        <div className="logo">
-          🔥
-        </div>
+        <div className="logo">🔥</div>
 
         <h1>
           FOREST <span>FIRE</span>
@@ -107,6 +104,12 @@ function Login() {
             }
             required
           />
+
+          <div className="forgot-password">
+            <Link to="/forgot-password">
+              Forgot Password?
+            </Link>
+          </div>
 
           <button type="submit">
             LOGIN →
