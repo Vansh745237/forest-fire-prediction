@@ -363,14 +363,13 @@ const [selectedPosition, setSelectedPosition] =
       ];
   }
 };
-const isMobile = window.innerWidth <= 768;
 const chartData = [
   {
-    name: "Temp",
+    name: window.innerWidth <= 768 ? "Temp" : "Temperature",
     value: Number(form.temperature) || 0,
   },
   {
-    name: "Hum",
+    name: window.innerWidth <= 768 ? "Hum" : "Humidity",
     value: Number(form.humidity) || 0,
   },
   {
