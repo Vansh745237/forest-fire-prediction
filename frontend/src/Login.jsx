@@ -47,8 +47,8 @@ function Login() {
       );
 
       alert("Login Successful");
-
       navigate("/dashboard");
+
     } catch (error) {
       console.error("LOGIN ERROR:", error);
 
@@ -105,11 +105,14 @@ function Login() {
             required
           />
 
-          <div className="forgot-password">
-            <Link to="/forgot-password">
-              Forgot Password?
-            </Link>
-          </div>
+          <p style={{ color: "white", textAlign: "right", marginBottom: "15px" }}>
+  <Link
+    to="/forgot-password"
+    style={{ color: "#ff9800" }}
+  >
+    Forgot Password?
+  </Link>
+</p>
 
           <button type="submit">
             LOGIN →
@@ -117,7 +120,7 @@ function Login() {
         </form>
 
         <div className="signup-link">
-          Don't have an account?
+          Don't have an account?{" "}
           <Link to="/signup">
             Sign Up
           </Link>
