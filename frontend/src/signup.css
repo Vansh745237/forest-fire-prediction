@@ -200,18 +200,45 @@ form input:focus{
 
   .login-card{
     width:95%;
-    padding:30px;
+    padding:25px 20px;
+  }
+
+  .fire-icon{
+    font-size:45px;
+    margin-bottom:5px;
   }
 
   .logo-text{
-    font-size:2.8rem;
-  }
-
-  .welcome-title{
     font-size:2.2rem;
+    line-height:1.1;
+    letter-spacing:1px;
   }
 
   .sub-logo{
-    letter-spacing:6px;
+    font-size:0.85rem;
+    letter-spacing:4px;
+    margin-top:5px;
+  }
+
+  .welcome-title{
+    font-size:1.9rem;
+  }
+
+  .welcome-subtitle{
+    font-size:1rem;
+  }
+
+  form input{
+    height:60px;
+    font-size:1rem;
+  }
+
+  .login-btn{
+    height:60px;
+    font-size:1.1rem;
+  }
+
+  .signup-text{
+    font-size:1rem;
   }
 }

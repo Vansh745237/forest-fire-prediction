@@ -46,6 +46,7 @@ const API_URL = "https://forest-fire-prediction-5.onrender.com";
     rain: "",
   });
   const userId = localStorage.getItem("user_id");
+  
 console.log("USER ID:", userId);
 
   const [result, setResult] = useState(null);
@@ -362,14 +363,14 @@ const [selectedPosition, setSelectedPosition] =
       ];
   }
 };
-
+const isMobile = window.innerWidth <= 768;
 const chartData = [
   {
     name: "Temp",
     value: Number(form.temperature) || 0,
   },
   {
-    name: "Humidity",
+    name: "Hum",
     value: Number(form.humidity) || 0,
   },
   {
@@ -709,18 +710,28 @@ const chartData = [
               <h3>Weather Analytics</h3>
 
               <ResponsiveContainer
-                width="100%"
-                height={250}
-              >
-
-                <BarChart data={chartData}>
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="value" />
-                </BarChart>
-
-              </ResponsiveContainer>
+  width="100%"
+  height={250}
+>
+  <BarChart
+    data={chartData}
+    margin={{
+      top: 10,
+      right: 10,
+      left: 0,
+      bottom: 20
+    }}
+  >
+    <XAxis
+      dataKey="name"
+      interval={0}
+      tick={{ fontSize: 11 }}
+    />
+    <YAxis />
+    <Tooltip />
+    <Bar dataKey="value" />
+  </BarChart>
+</ResponsiveContainer>
 
             </div>
 
