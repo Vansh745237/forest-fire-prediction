@@ -1,8 +1,9 @@
-console.log("USER ID:", userId);
+
 import ChatBot from "./Chatbot";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
+import { useNavigate } from "react-router-dom";
 
 import {
   MapContainer,
@@ -35,6 +36,7 @@ import {
 
 import "./App.css";
 function Dashboard() {
+  const navigate = useNavigate();
 const API_URL = "https://forest-fire-prediction-5.onrender.com";
   const [form, setForm] = useState({
     city: "Delhi",
@@ -43,6 +45,8 @@ const API_URL = "https://forest-fire-prediction-5.onrender.com";
     wind: "",
     rain: "",
   });
+  const userId = localStorage.getItem("user_id");
+console.log("USER ID:", userId);
 
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
