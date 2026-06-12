@@ -26,7 +26,7 @@ app = FastAPI(
 from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi.middleware.cors import CORSMiddleware
-
+print("CORS LOADED")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
