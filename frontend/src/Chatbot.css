@@ -135,3 +135,57 @@
 
   background:#ff7b39;
 }
+/* =========================
+   MOBILE RESPONSIVE CHATBOT
+========================= */
+
+@media screen and (max-width:768px){
+
+  .chat-toggle{
+    width:55px;
+    height:55px;
+
+    right:15px;
+    bottom:15px;
+
+    font-size:20px;
+  }
+
+  .chat-container{
+    width:95%;
+    height:75vh;
+
+    right:2.5%;
+    bottom:80px;
+
+    border-radius:18px;
+  }
+
+  .chat-header{
+    font-size:15px;
+    padding:12px;
+  }
+
+  .chat-messages{
+    padding:12px;
+  }
+
+  .message{
+    font-size:14px;
+    word-wrap:break-word;
+  }
+
+  .chat-input{
+    padding:8px;
+  }
+
+  .chat-input input{
+    font-size:14px;
+    height:42px;
+  }
+
+  .chat-input button{
+    padding:0 12px;
+    font-size:14px;
+  }
+}

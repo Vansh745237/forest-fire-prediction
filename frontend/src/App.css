@@ -1313,3 +1313,75 @@ body{
   50%{transform:scale(1.03);}
   100%{transform:scale(1);}
 }
+/* ================= MOBILE FIX ================= */
+
+@media screen and (max-width:768px){
+
+  .main-container{
+    width:95%;
+    padding:0 10px;
+  }
+
+  .hero h1{
+    font-size:2rem !important;
+  }
+
+  .section-title h2{
+    font-size:1.8rem !important;
+  }
+
+  .stats-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .weather-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .button-group{
+    grid-template-columns:1fr !important;
+  }
+
+  .history-card{
+    flex-direction:column;
+    gap:10px;
+    text-align:center;
+  }
+
+  .probability{
+    font-size:3rem !important;
+  }
+
+  .risk{
+    font-size:2rem !important;
+  }
+
+  .chart-container{
+    overflow-x:auto;
+  }
+
+  .stat-card{
+    width:100%;
+  }
+
+  .weather-card{
+    min-height:auto;
+  }
+}
+
+/* ================= TABLET ================= */
+
+@media screen and (min-width:769px) and (max-width:1024px){
+
+  .stats-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .weather-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .button-group{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
