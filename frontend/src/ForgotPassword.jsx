@@ -8,10 +8,8 @@ function ForgotPassword() {
 
   const API_URL =
     "https://forest-fire-prediction-5.onrender.com";
-
-  const handleReset = async () => {
-  console.log("HANDLE RESET RUNNING");
-  console.log("EMAIL:", email);
+const handleReset = async () => {
+  alert("handleReset running");
 
   try {
     const response = await axios.post(
@@ -19,10 +17,10 @@ function ForgotPassword() {
       { email }
     );
 
-    console.log(response.data);
     alert(response.data.message);
   } catch (error) {
-    console.error("ERROR:", error);
+    alert("API Error");
+    console.error(error);
   }
 };
   return (
@@ -51,7 +49,7 @@ function ForgotPassword() {
 
         <button
   onClick={() => {
-    console.log("BUTTON CLICKED");
+    alert("Button clicked");
     handleReset();
   }}
 >
