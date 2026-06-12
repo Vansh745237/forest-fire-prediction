@@ -55,7 +55,7 @@ const [highRisk, setHighRisk] = useState(0);
 const [mediumRisk, setMediumRisk] = useState(0);
 const [lowRisk, setLowRisk] = useState(0);
 
-const userId = localStorage.getItem("user_id");
+
 
 const fetchUserStats = async () => {
   try {
