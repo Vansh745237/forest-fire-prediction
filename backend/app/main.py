@@ -69,7 +69,8 @@ async def forgot_password(data: ForgotPasswordRequest):
     try:
 
         reset_link = (
-            f"https://forest-fire-prediction-4yv1.vercel.app/reset-password?email={data.email}"
+            f"https://forest-fire-prediction-zo7z.vercel.app/reset-password?email={data.email}"
+            
         )
 
         params = {
