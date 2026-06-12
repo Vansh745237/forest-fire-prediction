@@ -121,13 +121,29 @@ Keep answers concise and helpful.
 # =========================
 @app.post("/forgot-password")
 async def forgot_password(data: ForgotPasswordRequest):
+    try:
+        params = {
+            "from": "onboarding@resend.dev",
+            "to": [data.email],
+            "subject": "Password Reset Request",
+            "html": f"""
+            <h2>Reset Your Password</h2>
+            <p>You requested a password reset.</p>
+            <p>Click the link below:</p>
+            <a href="https://forest-fire-prediction-4yv1.vercel.app/reset-password">
+                Reset Password
+            </a>
+            """
+        }
 
-    return {
-        "message": f"Reset link sent to {data.email}"
-    }
-@app.get("/")
-def root():
+        resend.Emails.send(params)
 
-    return {
-        "message": "Forest Fire Prediction API Running"
-    }
+        return {
+            "message": f"Reset link sent to {data.email}"
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
