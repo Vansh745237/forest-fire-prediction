@@ -1,3 +1,4 @@
+console.log("FORGOT PASSWORD V3");
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
