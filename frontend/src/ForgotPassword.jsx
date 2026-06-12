@@ -12,15 +12,22 @@ const handleReset = async () => {
   alert("handleReset running");
 
   try {
+    console.log("Sending request...");
+
     const response = await axios.post(
       `${API_URL}/forgot-password`,
       { email }
     );
 
+    console.log("Response:", response);
     alert(response.data.message);
+
   } catch (error) {
+    console.error("FULL ERROR:", error);
+    console.error("RESPONSE:", error.response);
+    console.error("MESSAGE:", error.message);
+
     alert("API Error");
-    console.error(error);
   }
 };
   return (
