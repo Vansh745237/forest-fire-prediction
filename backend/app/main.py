@@ -35,3 +35,31 @@ app.add_middleware(
 Base.metadata.create_all(bind=engine)
 
 app.include_router(router)
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+@app.post("/forgot-password")
+async def forgot_password(data: ForgotPasswordRequest):
+    try:
+        params = {
+            "from": "onboarding@resend.dev",
+            "to": [data.email],
+            "subject": "Password Reset Request",
+            "html": """
+            <h2>Reset Your Password</h2>
+            <p>You requested a password reset.</p>
+            """
+        }
+
+        resend.Emails.send(params)
+
+        return {
+            "message": f"Reset link sent to {data.email}"
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
