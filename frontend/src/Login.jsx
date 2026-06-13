@@ -26,10 +26,20 @@ function Login() {
 
       console.log("LOGIN RESPONSE:", response.data);
 
-      if (!response.data.user_id) {
-        alert("user_id not received from server");
-        return;
-      }
+if (response.data.message === "User not found") {
+  alert("User not found. Please sign up first.");
+  return;
+}
+
+if (response.data.message === "Invalid password") {
+  alert("Invalid password");
+  return;
+}
+
+if (!response.data.user_id) {
+  alert("Login failed");
+  return;
+}
 
       localStorage.setItem(
         "user_id",
