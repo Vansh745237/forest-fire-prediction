@@ -8,6 +8,7 @@ function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const API_URL =
     "https://forest-fire-prediction-5.onrender.com";
@@ -81,15 +82,51 @@ function Login() {
             required
           />
 
-          <input
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-            required
-          />
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+            }}
+          >
+            <input
+              type={
+                showPassword
+                  ? "text"
+                  : "password"
+              }
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
+              required
+              style={{
+                paddingRight: "40px",
+              }}
+            />
+
+            <span
+              onClick={() =>
+                setShowPassword(
+                  !showPassword
+                )
+              }
+              style={{
+                position: "absolute",
+                right: "12px",
+                top: "50%",
+                transform:
+                  "translateY(-50%)",
+                cursor: "pointer",
+                userSelect: "none",
+                fontSize: "18px",
+              }}
+            >
+              {showPassword
+                ? "🙈"
+                : "👁️"}
+            </span>
+          </div>
 
           <div className="forgot-password">
             <Link to="/forgot-password">
@@ -104,7 +141,9 @@ function Login() {
 
         <div className="signup-link">
           Don't have an account?{" "}
-          <Link to="/signup">Sign Up</Link>
+          <Link to="/signup">
+            Sign Up
+          </Link>
         </div>
       </div>
     </div>

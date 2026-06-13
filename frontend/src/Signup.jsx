@@ -6,6 +6,14 @@ import "./signup.css";
 export default function Signup() {
   const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  const [
+    showConfirmPassword,
+    setShowConfirmPassword,
+  ] = useState(false);
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -108,23 +116,97 @@ export default function Signup() {
             required
           />
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Create password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+            }}
+          >
+            <input
+              type={
+                showPassword
+                  ? "text"
+                  : "password"
+              }
+              name="password"
+              placeholder="Create password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              style={{
+                paddingRight: "40px",
+              }}
+            />
 
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
+            <span
+              onClick={() =>
+                setShowPassword(
+                  !showPassword
+                )
+              }
+              style={{
+                position: "absolute",
+                right: "12px",
+                top: "50%",
+                transform:
+                  "translateY(-50%)",
+                cursor: "pointer",
+                userSelect: "none",
+                fontSize: "18px",
+              }}
+            >
+              {showPassword
+                ? "🙈"
+                : "👁️"}
+            </span>
+          </div>
+
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+            }}
+          >
+            <input
+              type={
+                showConfirmPassword
+                  ? "text"
+                  : "password"
+              }
+              name="confirmPassword"
+              placeholder="Confirm password"
+              value={
+                formData.confirmPassword
+              }
+              onChange={handleChange}
+              required
+              style={{
+                paddingRight: "40px",
+              }}
+            />
+
+            <span
+              onClick={() =>
+                setShowConfirmPassword(
+                  !showConfirmPassword
+                )
+              }
+              style={{
+                position: "absolute",
+                right: "12px",
+                top: "50%",
+                transform:
+                  "translateY(-50%)",
+                cursor: "pointer",
+                userSelect: "none",
+                fontSize: "18px",
+              }}
+            >
+              {showConfirmPassword
+                ? "🙈"
+                : "👁️"}
+            </span>
+          </div>
 
           <button
             type="submit"

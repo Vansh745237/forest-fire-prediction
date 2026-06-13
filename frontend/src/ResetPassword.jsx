@@ -9,6 +9,9 @@ function ResetPassword() {
   const [password, setPassword] =
     useState("");
 
+  const [showPassword, setShowPassword] =
+    useState(false);
+
   const handleReset = async () => {
     try {
       const res = await axios.post(
@@ -30,14 +33,50 @@ function ResetPassword() {
       <div className="login-card">
         <h1>RESET PASSWORD</h1>
 
-        <input
-          type="password"
-          placeholder="Enter New Password"
-          value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-        />
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+          }}
+        >
+          <input
+            type={
+              showPassword
+                ? "text"
+                : "password"
+            }
+            placeholder="Enter New Password"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+            style={{
+              paddingRight: "40px",
+            }}
+          />
+
+          <span
+            onClick={() =>
+              setShowPassword(
+                !showPassword
+              )
+            }
+            style={{
+              position: "absolute",
+              right: "12px",
+              top: "50%",
+              transform:
+                "translateY(-50%)",
+              cursor: "pointer",
+              userSelect: "none",
+              fontSize: "18px",
+            }}
+          >
+            {showPassword
+              ? "🙈"
+              : "👁️"}
+          </span>
+        </div>
 
         <button onClick={handleReset}>
           Reset Password
