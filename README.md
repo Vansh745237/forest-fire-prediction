@@ -238,7 +238,7 @@ Interactive charts and analytics to improve understanding of prediction results.
 
 ### Application Link
 
-https://forest-fire-prediction-j6yl.vercel.app
+https://forest-fire-prediction-co9t.vercel.app
 
 ---
 
