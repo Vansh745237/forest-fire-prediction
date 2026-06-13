@@ -42,20 +42,30 @@ def signup(
 ):
     try:
         email = user.email.strip().lower()
+        username = user.username.strip()
 
-        print("SIGNUP EMAIL:", repr(email))
-
-        existing_user = db.query(User).filter(
+        # Check email
+        existing_email = db.query(User).filter(
             User.email == email
         ).first()
 
-        if existing_user:
+        if existing_email:
             return {
                 "message": "Email already exists"
             }
 
+        # Check username
+        existing_username = db.query(User).filter(
+            User.username == username
+        ).first()
+
+        if existing_username:
+            return {
+                "message": "Username already exists"
+            }
+
         new_user = User(
-            username=user.username.strip(),
+            username=username,
             email=email,
             password=hash_password(user.password)
         )
@@ -64,8 +74,6 @@ def signup(
         db.commit()
         db.refresh(new_user)
 
-        print("CREATED USER ID:", new_user.id)
-
         return {
             "message": "Signup successful"
         }
@@ -73,9 +81,8 @@ def signup(
     except Exception as e:
         db.rollback()
 
-        print("SIGNUP ERROR:", str(e))
-
         return {
+            "message": "Signup failed",
             "error": str(e)
         }
 
@@ -91,8 +98,6 @@ def login(
 ):
     try:
         email = user.email.strip().lower()
-
-        print("LOGIN EMAIL:", repr(email))
 
         db_user = db.query(User).filter(
             User.email == email
@@ -118,15 +123,10 @@ def login(
         }
 
     except Exception as e:
-        print("LOGIN ERROR:", str(e))
-
         return {
             "message": "Login failed",
             "error": str(e)
         }
-
-
-
 # =========================
 # PREDICT
 # =========================

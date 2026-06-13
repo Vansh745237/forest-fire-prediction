@@ -52,10 +52,12 @@ export default function Signup() {
         }
       );
 
-      alert(
-        response.data.message ||
-          "Signup Successful"
-      );
+      if (response.data.message === "Signup successful") {
+  alert("Signup Successful");
+  navigate("/");
+} else {
+  alert(response.data.message);
+}
 
       navigate("/");
     } catch (error) {
