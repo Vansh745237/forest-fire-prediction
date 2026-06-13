@@ -16,11 +16,6 @@ from app.auth import (
     verify_password
 )
 
-from fastapi.responses import Response
-
-@app.options("/{rest_of_path:path}")
-async def preflight_handler(rest_of_path: str):
-    return Response(status_code=200)
 router = APIRouter()
 
 
@@ -34,7 +29,6 @@ def signup(
     db: Session = Depends(get_db)
 ):
     try:
-
         existing_user = db.query(User).filter(
             User.email == user.email
         ).first()
@@ -62,6 +56,8 @@ def signup(
         return {
             "error": str(e)
         }
+
+
 # =========================
 # LOGIN
 # =========================
@@ -136,7 +132,6 @@ def predict(
 
     db.add(record)
 
-    # Update User Stats
     user.prediction_count += 1
 
     if risk.upper() == "HIGH":
@@ -155,10 +150,6 @@ def predict(
         "risk_level": risk
     }
 
-
-# =========================
-# HISTORY
-# =========================
 
 # =========================
 # HISTORY
@@ -205,7 +196,9 @@ def get_user_stats(
         "medium_risk": user.medium_risk,
         "low_risk": user.low_risk
     }
-    # =========================
+
+
+# =========================
 # CHATBOT
 # =========================
 

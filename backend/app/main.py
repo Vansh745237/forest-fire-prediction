@@ -44,7 +44,7 @@ app.add_middleware(
 
 Base.metadata.create_all(bind=engine)
 
-# Existing routes
+# Routes
 app.include_router(router)
 
 # =========================
@@ -70,7 +70,6 @@ async def forgot_password(data: ForgotPasswordRequest):
 
         reset_link = (
             f"https://forest-fire-prediction-zo7z.vercel.app/reset-password?email={data.email}"
-            
         )
 
         params = {
@@ -149,15 +148,4 @@ async def reset_password(data: ResetPasswordRequest):
 def root():
     return {
         "message": "Forest Fire Prediction API Running"
-    }
-    # =========================
-# CHATBOT
-# =========================
-
-@router.post("/chat")
-def chat(data: dict):
-    message = data.get("message", "")
-
-    return {
-        "reply": f"You asked: {message}"
     }
