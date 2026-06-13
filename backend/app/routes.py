@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
+from pydantic import BaseModel
 from app.database import get_db
 from app.predictor import predict_fire
 from app.models import Prediction, User
@@ -17,6 +17,10 @@ from app.auth import (
 )
 
 router = APIRouter()
+router = APIRouter()
+
+class ChatRequest(BaseModel):
+    message: str
 
 
 # =========================
@@ -203,9 +207,7 @@ def get_user_stats(
 # =========================
 
 @router.post("/chat")
-def chat(data: dict):
-    message = data.get("message", "")
-
+def chat(data: ChatRequest):
     return {
-        "reply": f"You asked: {message}"
+        "reply": f"You asked: {data.message}"
     }
