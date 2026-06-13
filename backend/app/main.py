@@ -7,7 +7,8 @@ from app.routes import router
 from app.models import User
 from app.auth import hash_password
 
-import resend
+import smtplib
+from email.mime.text import MIMEText
 from dotenv import load_dotenv
 import os
 
@@ -16,7 +17,7 @@ import os
 # =========================
 
 load_dotenv()
-resend.api_key = os.getenv("RESEND_API_KEY")
+
 
 # =========================
 # FASTAPI APP
@@ -80,28 +81,34 @@ async def forgot_password(data: ForgotPasswordRequest):
             f"https://forest-fire-prediction-zo7z.vercel.app/reset-password?email={data.email}"
         )
 
-        params = {
-            "from": "onboarding@resend.dev",
-            "to": [data.email],
-            "subject": "Password Reset Request",
-            "html": f"""
-            <h2>Reset Your Password</h2>
+        sender_email = os.getenv("EMAIL_USER")
+        sender_password = os.getenv("EMAIL_PASSWORD")
 
-            <p>Click the button below to reset your password:</p>
+        html_content = f"""
+        <h2>Reset Your Password</h2>
 
-            <a href="{reset_link}"
-               style="
-               background:#16a34a;
-               color:white;
-               padding:12px 20px;
-               text-decoration:none;
-               border-radius:6px;">
-               Reset Password
-            </a>
-            """
-        }
+        <p>Click the button below to reset your password:</p>
 
-        resend.Emails.send(params)
+        <a href="{reset_link}"
+           style="
+           background:#16a34a;
+           color:white;
+           padding:12px 20px;
+           text-decoration:none;
+           border-radius:6px;">
+           Reset Password
+        </a>
+        """
+
+        msg = MIMEText(html_content, "html")
+        msg["Subject"] = "Password Reset Request"
+        msg["From"] = sender_email
+        msg["To"] = data.email
+
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.send_message(msg)
 
         return {
             "message": f"Reset link sent to {data.email}"
@@ -112,7 +119,6 @@ async def forgot_password(data: ForgotPasswordRequest):
             status_code=500,
             detail=str(e)
         )
-
 
 # =========================
 # RESET PASSWORD
