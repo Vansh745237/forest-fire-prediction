@@ -150,3 +150,14 @@ def root():
     return {
         "message": "Forest Fire Prediction API Running"
     }
+    # =========================
+# CHATBOT
+# =========================
+
+@router.post("/chat")
+def chat(data: dict):
+    message = data.get("message", "")
+
+    return {
+        "reply": f"You asked: {message}"
+    }
