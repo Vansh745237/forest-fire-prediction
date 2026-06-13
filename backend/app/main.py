@@ -7,8 +7,7 @@ from app.routes import router
 from app.models import User
 from app.auth import hash_password
 
-import smtplib
-from email.mime.text import MIMEText
+import requests
 from dotenv import load_dotenv
 import os
 
@@ -81,34 +80,54 @@ async def forgot_password(data: ForgotPasswordRequest):
             f"https://forest-fire-prediction-zo7z.vercel.app/reset-password?email={data.email}"
         )
 
-        sender_email = os.getenv("EMAIL_USER")
-        sender_password = os.getenv("EMAIL_PASSWORD")
+        api_key = os.getenv("BREVO_API_KEY")
 
-        html_content = f"""
-        <h2>Reset Your Password</h2>
+        headers = {
+            "accept": "application/json",
+            "api-key": api_key,
+            "content-type": "application/json"
+        }
 
-        <p>Click the button below to reset your password:</p>
+        payload = {
+            "sender": {
+                "name": "Forest Fire Prediction",
+                "email": "vanshbathla125@gmail.com"
+            },
+            "to": [
+                {
+                    "email": data.email
+                }
+            ],
+            "subject": "Password Reset Request",
+            "htmlContent": f"""
+            <h2>Reset Your Password</h2>
 
-        <a href="{reset_link}"
-           style="
-           background:#16a34a;
-           color:white;
-           padding:12px 20px;
-           text-decoration:none;
-           border-radius:6px;">
-           Reset Password
-        </a>
-        """
+            <p>Click the button below to reset your password:</p>
 
-        msg = MIMEText(html_content, "html")
-        msg["Subject"] = "Password Reset Request"
-        msg["From"] = sender_email
-        msg["To"] = data.email
+            <a href="{reset_link}"
+               style="
+               background:#16a34a;
+               color:white;
+               padding:12px 20px;
+               text-decoration:none;
+               border-radius:6px;">
+               Reset Password
+            </a>
+            """
+        }
 
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:
-            server.starttls()
-            server.login(sender_email, sender_password)
-            server.send_message(msg)
+        response = requests.post(
+            "https://api.brevo.com/v3/smtp/email",
+            headers=headers,
+            json=payload,
+            timeout=20
+        )
+
+        print("Brevo Response:", response.status_code)
+        print("Brevo Body:", response.text)
+
+        if response.status_code not in [200, 201, 202]:
+            raise Exception(response.text)
 
         return {
             "message": f"Reset link sent to {data.email}"
@@ -119,7 +138,6 @@ async def forgot_password(data: ForgotPasswordRequest):
             status_code=500,
             detail=str(e)
         )
-
 # =========================
 # RESET PASSWORD
 # =========================
