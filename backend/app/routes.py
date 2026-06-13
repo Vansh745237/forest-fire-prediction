@@ -41,8 +41,12 @@ def signup(
     db: Session = Depends(get_db)
 ):
     try:
+        email = user.email.strip().lower()
+
+        print("SIGNUP EMAIL:", repr(email))
+
         existing_user = db.query(User).filter(
-            User.email == user.email
+            User.email == email
         ).first()
 
         if existing_user:
@@ -51,13 +55,16 @@ def signup(
             }
 
         new_user = User(
-            username=user.username,
-            email=user.email,
+            username=user.username.strip(),
+            email=email,
             password=hash_password(user.password)
         )
 
         db.add(new_user)
         db.commit()
+        db.refresh(new_user)
+
+        print("CREATED USER ID:", new_user.id)
 
         return {
             "message": "Signup successful"
@@ -65,6 +72,9 @@ def signup(
 
     except Exception as e:
         db.rollback()
+
+        print("SIGNUP ERROR:", str(e))
+
         return {
             "error": str(e)
         }
@@ -79,29 +89,42 @@ def login(
     user: UserLogin,
     db: Session = Depends(get_db)
 ):
+    try:
+        email = user.email.strip().lower()
 
-    db_user = db.query(User).filter(
-        User.email == user.email
-    ).first()
+        print("LOGIN EMAIL:", repr(email))
 
-    if not db_user:
+        db_user = db.query(User).filter(
+            User.email == email
+        ).first()
+
+        if not db_user:
+            return {
+                "message": "User not found"
+            }
+
+        if not verify_password(
+            user.password,
+            db_user.password
+        ):
+            return {
+                "message": "Invalid password"
+            }
+
         return {
-            "message": "User not found"
+            "message": "Login successful",
+            "user_id": db_user.id,
+            "username": db_user.username
         }
 
-    if not verify_password(
-        user.password,
-        db_user.password
-    ):
+    except Exception as e:
+        print("LOGIN ERROR:", str(e))
+
         return {
-            "message": "Invalid password"
+            "message": "Login failed",
+            "error": str(e)
         }
 
-    return {
-        "message": "Login successful",
-        "user_id": db_user.id,
-        "username": db_user.username
-    }
 
 
 # =========================
