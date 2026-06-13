@@ -16,6 +16,11 @@ from app.auth import (
     verify_password
 )
 
+from fastapi.responses import Response
+
+@app.options("/{rest_of_path:path}")
+async def preflight_handler(rest_of_path: str):
+    return Response(status_code=200)
 router = APIRouter()
 
 
@@ -199,4 +204,15 @@ def get_user_stats(
         "high_risk": user.high_risk,
         "medium_risk": user.medium_risk,
         "low_risk": user.low_risk
+    }
+    # =========================
+# CHATBOT
+# =========================
+
+@router.post("/chat")
+def chat(data: dict):
+    message = data.get("message", "")
+
+    return {
+        "reply": f"You asked: {message}"
     }
