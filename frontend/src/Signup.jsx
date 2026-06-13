@@ -1,19 +1,10 @@
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./signup.css";
 
 export default function Signup() {
   const navigate = useNavigate();
-
-  const [showPassword, setShowPassword] =
-    useState(false);
-
-  const [
-    showConfirmPassword,
-    setShowConfirmPassword,
-  ] = useState(false);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -60,10 +51,7 @@ export default function Signup() {
 
       navigate("/");
     } catch (error) {
-      console.error(
-        "Signup Error:",
-        error
-      );
+      console.error("Signup Error:", error);
 
       if (error.response) {
         alert(
@@ -98,8 +86,7 @@ export default function Signup() {
         </h1>
 
         <p className="welcome-subtitle">
-          Join the Forest Fire Intelligence
-          Dashboard
+          Join the Forest Fire Intelligence Dashboard
         </p>
 
         <form onSubmit={handleSignup}>
@@ -121,97 +108,23 @@ export default function Signup() {
             required
           />
 
-          <div
-            style={{ position: "relative" }}
-          >
-            <input
-              type={
-                showPassword
-                  ? "text"
-                  : "password"
-              }
-              name="password"
-              placeholder="Create password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              style={{
-                paddingRight: "45px",
-              }}
-            />
+          <input
+            type="password"
+            name="password"
+            placeholder="Create password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
 
-            <button
-              type="button"
-              onClick={() =>
-                setShowPassword(
-                  !showPassword
-                )
-              }
-              style={{
-                position: "absolute",
-                right: "12px",
-                top: "50%",
-                transform:
-                  "translateY(-50%)",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              {showPassword ? (
-                <EyeOff size={18} />
-              ) : (
-                <Eye size={18} />
-              )}
-            </button>
-          </div>
-
-          <div
-            style={{ position: "relative" }}
-          >
-            <input
-              type={
-                showConfirmPassword
-                  ? "text"
-                  : "password"
-              }
-              name="confirmPassword"
-              placeholder="Confirm password"
-              value={
-                formData.confirmPassword
-              }
-              onChange={handleChange}
-              required
-              style={{
-                paddingRight: "45px",
-              }}
-            />
-
-            <button
-              type="button"
-              onClick={() =>
-                setShowConfirmPassword(
-                  !showConfirmPassword
-                )
-              }
-              style={{
-                position: "absolute",
-                right: "12px",
-                top: "50%",
-                transform:
-                  "translateY(-50%)",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              {showConfirmPassword ? (
-                <EyeOff size={18} />
-              ) : (
-                <Eye size={18} />
-              )}
-            </button>
-          </div>
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
 
           <button
             type="submit"
@@ -223,9 +136,7 @@ export default function Signup() {
 
         <p className="signup-text">
           Already have an account?{" "}
-          <Link to="/">
-            Login
-          </Link>
+          <Link to="/">Login</Link>
         </p>
       </div>
     </div>

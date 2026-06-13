@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
@@ -9,7 +8,6 @@ function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
 
   const API_URL =
     "https://forest-fire-prediction-5.onrender.com";
@@ -26,8 +24,6 @@ function Login() {
         }
       );
 
-      console.log("LOGIN RESPONSE:", response.data);
-
       if (response.data.message === "User not found") {
         alert("User not found. Please sign up first.");
         return;
@@ -35,11 +31,6 @@ function Login() {
 
       if (response.data.message === "Invalid password") {
         alert("Invalid password");
-        return;
-      }
-
-      if (!response.data.user_id) {
-        alert("Login failed");
         return;
       }
 
@@ -56,15 +47,6 @@ function Login() {
       alert("Login Successful");
       navigate("/dashboard");
     } catch (error) {
-      console.error("LOGIN ERROR:", error);
-
-      if (error.response) {
-        console.log(
-          "SERVER RESPONSE:",
-          error.response.data
-        );
-      }
-
       alert("Invalid Email or Password");
     }
   };
@@ -82,9 +64,7 @@ function Login() {
 
         <h2>PREDICTION</h2>
 
-        <p className="welcome">
-          Welcome Back!
-        </p>
+        <p className="welcome">Welcome Back!</p>
 
         <p className="subtitle">
           Login to continue to your dashboard
@@ -101,47 +81,15 @@ function Login() {
             required
           />
 
-          <div style={{ position: "relative" }}>
-            <input
-              type={
-                showPassword
-                  ? "text"
-                  : "password"
-              }
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) =>
-                setPassword(e.target.value)
-              }
-              required
-              style={{ paddingRight: "45px" }}
-            />
-
-            <button
-              type="button"
-              onClick={() =>
-                setShowPassword(
-                  !showPassword
-                )
-              }
-              style={{
-                position: "absolute",
-                right: "12px",
-                top: "50%",
-                transform:
-                  "translateY(-50%)",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              {showPassword ? (
-                <EyeOff size={18} />
-              ) : (
-                <Eye size={18} />
-              )}
-            </button>
-          </div>
+          <input
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+            required
+          />
 
           <div className="forgot-password">
             <Link to="/forgot-password">
@@ -156,9 +104,7 @@ function Login() {
 
         <div className="signup-link">
           Don't have an account?{" "}
-          <Link to="/signup">
-            Sign Up
-          </Link>
+          <Link to="/signup">Sign Up</Link>
         </div>
       </div>
     </div>
