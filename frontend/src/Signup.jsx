@@ -1,10 +1,19 @@
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./signup.css";
 
 export default function Signup() {
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  const [
+    showConfirmPassword,
+    setShowConfirmPassword,
+  ] = useState(false);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -13,7 +22,8 @@ export default function Signup() {
     confirmPassword: "",
   });
 
-  const API_URL = "https://forest-fire-prediction-5.onrender.com";
+  const API_URL =
+    "https://forest-fire-prediction-5.onrender.com";
 
   const handleChange = (e) => {
     setFormData({
@@ -25,13 +35,15 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
+    if (
+      formData.password !==
+      formData.confirmPassword
+    ) {
       alert("Passwords do not match");
       return;
     }
 
     try {
-      console.log("API_URL =", API_URL);
       const response = await axios.post(
         `${API_URL}/signup`,
         {
@@ -41,16 +53,22 @@ export default function Signup() {
         }
       );
 
-      alert(response.data.message || "Signup Successful");
-      navigate("/");
+      alert(
+        response.data.message ||
+          "Signup Successful"
+      );
 
+      navigate("/");
     } catch (error) {
-      console.error("Signup Error:", error);
+      console.error(
+        "Signup Error:",
+        error
+      );
 
       if (error.response) {
         alert(
           error.response.data.message ||
-          `Error: ${error.response.status}`
+            `Error: ${error.response.status}`
         );
       } else {
         alert("Server not responding");
@@ -63,7 +81,6 @@ export default function Signup() {
       <div className="overlay"></div>
 
       <div className="login-card">
-
         <div className="logo-section">
           <div className="fire-icon">🔥</div>
 
@@ -81,11 +98,11 @@ export default function Signup() {
         </h1>
 
         <p className="welcome-subtitle">
-          Join the Forest Fire Intelligence Dashboard
+          Join the Forest Fire Intelligence
+          Dashboard
         </p>
 
         <form onSubmit={handleSignup}>
-
           <input
             type="text"
             name="username"
@@ -104,23 +121,97 @@ export default function Signup() {
             required
           />
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Create password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <div
+            style={{ position: "relative" }}
+          >
+            <input
+              type={
+                showPassword
+                  ? "text"
+                  : "password"
+              }
+              name="password"
+              placeholder="Create password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              style={{
+                paddingRight: "45px",
+              }}
+            />
 
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
+            <button
+              type="button"
+              onClick={() =>
+                setShowPassword(
+                  !showPassword
+                )
+              }
+              style={{
+                position: "absolute",
+                right: "12px",
+                top: "50%",
+                transform:
+                  "translateY(-50%)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              {showPassword ? (
+                <EyeOff size={18} />
+              ) : (
+                <Eye size={18} />
+              )}
+            </button>
+          </div>
+
+          <div
+            style={{ position: "relative" }}
+          >
+            <input
+              type={
+                showConfirmPassword
+                  ? "text"
+                  : "password"
+              }
+              name="confirmPassword"
+              placeholder="Confirm password"
+              value={
+                formData.confirmPassword
+              }
+              onChange={handleChange}
+              required
+              style={{
+                paddingRight: "45px",
+              }}
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                setShowConfirmPassword(
+                  !showConfirmPassword
+                )
+              }
+              style={{
+                position: "absolute",
+                right: "12px",
+                top: "50%",
+                transform:
+                  "translateY(-50%)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              {showConfirmPassword ? (
+                <EyeOff size={18} />
+              ) : (
+                <Eye size={18} />
+              )}
+            </button>
+          </div>
 
           <button
             type="submit"
@@ -128,7 +219,6 @@ export default function Signup() {
           >
             SIGN UP →
           </button>
-
         </form>
 
         <p className="signup-text">
@@ -137,7 +227,6 @@ export default function Signup() {
             Login
           </Link>
         </p>
-
       </div>
     </div>
   );
