@@ -19,15 +19,13 @@ from groq import Groq
 import os
 
 router = APIRouter()
-router = APIRouter()
-router = APIRouter()
+
 
 client = Groq(
     api_key=os.getenv("GROQ_API_KEY")
 )
 
-class ChatRequest(BaseModel):
-    message: str
+
 
 class ChatRequest(BaseModel):
     message: str
@@ -220,6 +218,10 @@ def get_user_stats(
 # CHATBOT
 # =========================
 
+# =========================
+# CHATBOT
+# =========================
+
 @router.post("/chat")
 def chat(data: ChatRequest):
 
@@ -258,5 +260,5 @@ def chat(data: ChatRequest):
 
     except Exception as e:
         return {
-            "reply": f"Error: {str(e)}"
+            "reply": str(e)
         }
