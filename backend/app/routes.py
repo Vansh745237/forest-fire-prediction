@@ -15,9 +15,19 @@ from app.auth import (
     hash_password,
     verify_password
 )
+from groq import Groq
+import os
 
 router = APIRouter()
 router = APIRouter()
+router = APIRouter()
+
+client = Groq(
+    api_key=os.getenv("GROQ_API_KEY")
+)
+
+class ChatRequest(BaseModel):
+    message: str
 
 class ChatRequest(BaseModel):
     message: str
@@ -206,8 +216,47 @@ def get_user_stats(
 # CHATBOT
 # =========================
 
+# =========================
+# CHATBOT
+# =========================
+
 @router.post("/chat")
 def chat(data: ChatRequest):
-    return {
-        "reply": f"You asked: {data.message}"
-    }
+
+    try:
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {
+                    "role": "system",
+                    "content": """
+                    You are a Forest Fire Prediction Assistant.
+
+                    Help users with:
+                    - Forest fire prediction
+                    - Fire risk levels
+                    - Temperature, humidity, rainfall and wind effects
+                    - Fire prevention and safety tips
+                    - Forest Fire Dashboard usage
+                    - Prediction results interpretation
+
+                    Give clear and concise answers.
+                    """
+                },
+                {
+                    "role": "user",
+                    "content": data.message
+                }
+            ],
+            temperature=0.7,
+            max_tokens=500
+        )
+
+        return {
+            "reply": response.choices[0].message.content
+        }
+
+    except Exception as e:
+        return {
+            "reply": f"Error: {str(e)}"
+        }
