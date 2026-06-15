@@ -17,6 +17,7 @@ from app.auth import (
 )
 from groq import Groq
 import os
+from app.database import get_db, SessionLocal
 
 router = APIRouter()
 
@@ -127,6 +128,27 @@ def login(
             "message": "Login failed",
             "error": str(e)
         }
+# =========================
+# DEBUG USERS
+# =========================
+
+@router.get("/debug-users")
+def debug_users():
+    db = SessionLocal()
+
+    try:
+        users = db.query(User).all()
+
+        return [
+            {
+                "id": u.id,
+                "email": u.email
+            }
+            for u in users
+        ]
+
+    finally:
+        db.close()       
 # =========================
 # PREDICT
 # =========================
