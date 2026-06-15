@@ -132,23 +132,7 @@ def login(
 # DEBUG USERS
 # =========================
 
-@router.get("/debug-users")
-def debug_users():
-    db = SessionLocal()
-
-    try:
-        users = db.query(User).all()
-
-        return [
-            {
-                "id": u.id,
-                "email": u.email
-            }
-            for u in users
-        ]
-
-    finally:
-        db.close()       
+  
 # =========================
 # PREDICT
 # =========================
