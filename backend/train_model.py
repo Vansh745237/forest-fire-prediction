@@ -16,7 +16,7 @@ from sklearn.metrics import (
 # ==========================
 # Load Dataset
 # ==========================
-df = pd.read_csv("forestfires.csv")
+df = pd.read_csv("../data/forestfires.csv")
 
 # Create target column
 df["fire"] = (df["area"] > 0).astype(int)
